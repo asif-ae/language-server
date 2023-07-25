@@ -71,15 +71,15 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/classes", verifyJWT, async (req, res) => {
+    app.get("/classes", async (req, res) => {
       const email = req.query?.email;
       if (!email) {
         res.status(404).send({ message: "Email Not Found", error: true });
       }
-      const decodedEmail = req.decoded.email;
-      if (email !== decodedEmail) {
-        return res.status(401).send({ error: true, message: "Unauthorized" });
-      }
+      // const decodedEmail = req.decoded.email;
+      // if (email !== decodedEmail) {
+      //   return res.status(401).send({ error: true, message: "Unauthorized" });
+      // }
       const result = await classCollection.find({ email: email }).toArray();
       res.send(result);
     });
@@ -148,7 +148,6 @@ async function run() {
       if (isFeedbackExists) {
         const results = await messageCollection.findOne({ uid: id });
         res.send(results);
-    
       } else {
         return res.send({ message: "Feedback Not Found", error: true });
       }
@@ -220,7 +219,7 @@ async function run() {
       };
 
       const result = await classCollection.updateOne(query, updatetask, option);
-  
+
       res.send(result);
     });
 
